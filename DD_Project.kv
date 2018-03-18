@@ -1,0 +1,132 @@
+#: import main app
+#: import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import ListItemButton kivy.uix.listview.ListItemButton
+
+
+<DD_ProjectRoot>:
+    orientation: "vertical"
+    
+    ActionBar:
+        ActionView:
+            ActionPrevious:
+                title: ""
+                with_previous: False
+            ActionOverflow:
+                ActionButton:
+                    text: "Settings"
+                    on_press: app.open_settings()
+    
+    ScreenManager:
+        id: kivy_screen_manager
+        StartScreen:
+            id: start_screen 
+            name: "start_screen"
+        ToDoList:
+            id: to_do_list
+            name: "to_do_list"
+
+<StartScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: root.width * 0.22, root.height * 0.35
+        spacing: 0
+        
+        Label:
+            text: root.mylabel
+            markup: True
+            color: 1,0,0,1
+        
+        BoxLayout:
+            orientation: "horizontal"
+            padding: 0,0,0,15
+            spacing: -(root.width * 0.1)
+            
+            Label:
+                font_size: self.height *0.5
+                text: "Username"
+            
+            TextInput:
+                id: username_input
+                font_size: self.height *0.5
+                text: ""
+                on_text: app.root.SetUserName(self.text)
+                multiline: False
+                
+        BoxLayout:
+            orientation: "horizontal"
+            padding: 0,0,0,15
+            spacing: -(root.width * 0.1)
+            
+            Label:
+                font_size: self.height *0.5
+                text: "Password"    
+                
+            TextInput:
+                font_size: self.height *0.5
+                id: password_input
+                text: ""
+                on_text: app.root.SetUserPassword(self.text)
+                multiline: False
+                password: True
+                
+        BoxLayout:
+            orientation: "horizontal"
+            padding:100,0,0,15
+            spacing: (root.width * 0.01)
+            
+            Button:
+                background_normal: ''
+                background_color: .1, .159, 1, 1
+                font_size: self.height *0.5
+                text: "Login"
+                on_release: app.root.Login()
+                
+            Button:
+                background_normal: ''
+                background_color: 1, .159, .223, 1
+                font_size: self.height *0.5
+                text: "SignUp"
+                on_release: app.root.SignUp()
+                
+
+
+<ToDoList>:
+    todoinput: ToDo
+    listoftodo: MyToDoList
+    orientation: "vertical"
+    padding: 10
+    spacing: 10
+    
+    BoxLayout:
+        size_hint_y: None
+        height: "40dp"
+        
+        Label:
+            text: "To Do"
+        TextInput:
+            font_size: self.height * 0.5
+            id: ToDo
+    
+    BoxLayout:
+        size_hint_y: None
+        height: "40dp"
+        
+        Button:
+            text: "Submit"
+            size_hint_x: 15
+            on_press: root.submit_to_do()
+            
+        Button:
+            text: "Delete"
+            size_hint_x: 15
+            on_press: root.delete_to_do()
+            
+        Button:
+            text: "Replace"
+            size_hint_x: 15
+            on_press: root.replace_to_do()
+            
+    ListView:
+        id: MyToDoList
+        adapter:
+            ListAdapter(data=[], cls=main.ToDoListItemButton)
